@@ -1,16 +1,21 @@
-import express from "express";
-import cors from "cors";
-import mongoose from "mongoose";
-import csrf from "csurf";
-import cookieParser from "cookie-parser";
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
+const userRoute = require("./routes/user.route");
+const authRoute = require("./routes/auth.route");
+const courseRoute = require("./routes/course.route");
+const enrollmentRoute = require("./routes/enrollment.route");
 require("dotenv").config();
-import userRoute from "./routes/user.route";
-import authRoute from "./routes/auth.route";
-import courseRoute from "./routes/course.route";
-import enrollmentRoute from "./routes/enrollment.route";
 
-const csrfProtection = csrf({ cookie: true });
+// import cors from "cors";
+// import mongoose from "mongoose";
+// import cookieParser from "cookie-parser";
+// import userRoute from "./routes/user.route";
+// import authRoute from "./routes/auth.route";
+// import courseRoute from "./routes/course.route";
+// import enrollmentRoute from "./routes/enrollment.route";
 
 // create express app
 const app = express();
@@ -40,7 +45,6 @@ app.use("/", authRoute);
 app.use("/", courseRoute);
 app.use("/", enrollmentRoute);
 // csrf
-// app.use(csrfProtection);
 
 // app.get("/api/csrf-token", (req, res) => {
 //   res.json({ csrfToken: req.csrfToken() });

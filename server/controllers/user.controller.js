@@ -1,20 +1,16 @@
-import User from "../models/user";
-import { hashPassword, comparePassword } from "../utils/auth";
-import jwt from "jsonwebtoken";
-import { extend } from "lodash";
-import user from "../models/user";
+const User = require("../models/user");
+const { hashPassword, comparePassword } = require("../utils/auth");
+const { extend } = require("lodash");
 
-export const create = async (req, res, next) => {
+const create = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
     req.body.password = await hashPassword(req.body.password);
     if (!name) return res.status(400).send({ error: "Name is required" });
     if (!password || password.length < 6) {
-      return res
-        .status(400)
-        .send({
-          error: "Password is required and should be min 6 characters long",
-        });
+      return res.status(400).send({
+        error: "Password is required and should be min 6 characters long",
+      });
     }
     let userExist = await User.findOne({ email }).exec();
     if (userExist) return res.status(400).send({ error: "Email is taken" });
@@ -28,7 +24,7 @@ export const create = async (req, res, next) => {
   }
 };
 
-export const list = async (req, res, next) => {
+const list = async (req, res, next) => {
   try {
     let users = await User.find().select("name email created updated");
     res.json(users);
@@ -36,7 +32,7 @@ export const list = async (req, res, next) => {
     console.log(error);
   }
 };
-export const currentUser = async (req, res) => {
+const currentUser = async (req, res) => {
   try {
     const user = await User.findById(req.auth._id).select("-password").exec();
     console.log("CURRENT_USER", user);
@@ -46,7 +42,7 @@ export const currentUser = async (req, res) => {
   }
 };
 
-export const userById = async (req, res, next, id) => {
+const userById = async (req, res, next, id) => {
   try {
     let user = await User.findById(id);
     if (!user)
@@ -60,7 +56,7 @@ export const userById = async (req, res, next, id) => {
   }
 };
 
-export const read = async (req, res, next) => {
+const read = async (req, res, next) => {
   // console.log(req);
   try {
     const user = await User.findById(req.user._id).select("-password").exec();
@@ -70,7 +66,7 @@ export const read = async (req, res, next) => {
   }
 };
 
-export const update = (req, res) => {
+const update = (req, res) => {
   const { name, password, educator } = req.body;
   if (password && password.length < 6) {
     return res
@@ -104,7 +100,7 @@ export const update = (req, res) => {
     }
   });
 };
-export const remove = async (req, res, next) => {
+const remove = async (req, res, next) => {
   try {
     let user = req.profile;
     let deletedUser = await user.remove();
@@ -116,7 +112,7 @@ export const remove = async (req, res, next) => {
   }
 };
 
-export const isEducator = async (req, res, next) => {
+const isEducator = async (req, res, next) => {
   const id = req.user._id;
   user.findById(id).exec((err, user) => {
     if (err || !user) {
@@ -128,4 +124,15 @@ export const isEducator = async (req, res, next) => {
       return res.status(401).send({ error: "User not an educator." });
     }
   });
+};
+
+module.exports = {
+  create,
+  list,
+  read,
+  remove,
+  isEducator,
+  currentUser,
+  update,
+  userById,
 };

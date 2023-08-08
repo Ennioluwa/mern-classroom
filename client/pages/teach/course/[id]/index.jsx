@@ -102,7 +102,6 @@ const course = () => {
       }
     }
   }
-  console.log(stats)
   return (
     <>
       <div className=" mt-[-64px] min-h-screen bg-purple-400 p-5 pt-24">

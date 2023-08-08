@@ -34,6 +34,7 @@ const Register = () => {
     e.preventDefault()
     try {
       setValues({ ...values, buttonText: 'Registering' })
+      axios.defaults.withCredentials = false
       await axios
         .post(`${process.env.NEXT_PUBLIC_APP_NAME}/api/user/create`, {
           email,

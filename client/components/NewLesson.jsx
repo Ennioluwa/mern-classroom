@@ -20,9 +20,15 @@ const NewLesson = ({ id, setCourse }) => {
     setValues({ ...values, isOpen: false })
   }
   const handleChange = (text) => (e) => {
-    setValues({ ...values, [text]: e.target.value, error: '' })
+    setValues({
+      ...values,
+      [text]: e.target.value,
+      error: '',
+      buttonText: 'Create',
+    })
   }
   const handleSubmit = async (e) => {
+    e.preventDefault()
     setValues({ ...values, buttonText: 'Creating' })
     try {
       await axios
@@ -37,7 +43,13 @@ const NewLesson = ({ id, setCourse }) => {
         .then(({ data }) => {
           console.log(data)
           setCourse(data)
-          setValues({ ...values, isOpen: false, buttonText: 'Created' })
+          setValues({
+            title: '',
+            content: '',
+            resource_url: '',
+            isOpen: true,
+            buttonText: 'Created',
+          })
         })
         .catch(({ response }) => {
           console.log(response.data)

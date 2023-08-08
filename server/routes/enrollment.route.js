@@ -1,6 +1,6 @@
-import express from "express";
-import { courseById } from "../controllers/course.controller";
-import {
+const express = require("express");
+const { courseById } = require("../controllers/course.controller");
+const {
   complete,
   create,
   enrollmentById,
@@ -9,8 +9,8 @@ import {
   isStudent,
   listEnrolled,
   read,
-} from "../controllers/enrollment.controller";
-import { signIn } from "../middlewares";
+} = require("../controllers/enrollment.controller");
+const { signIn } = require("../middlewares");
 
 const router = express.Router();
 
@@ -27,4 +27,4 @@ router
   .route("/api/enrollment/complete/:enrollmentId")
   .put(signIn, isStudent, complete);
 
-export default router;
+module.exports = router;

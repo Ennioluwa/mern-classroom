@@ -1,6 +1,6 @@
-import enrolled from "../models/enrolled";
+const enrolled = require("../models/enrolled");
 
-export const enrollmentById = async (req, res, next, id) => {
+const enrollmentById = async (req, res, next, id) => {
   try {
     enrolled
       .findById(id)
@@ -18,7 +18,7 @@ export const enrollmentById = async (req, res, next, id) => {
   }
 };
 
-export const isEnrollment = async (req, res, next) => {
+const isEnrollment = async (req, res, next) => {
   try {
     const enrollment = await enrolled.find({
       course: req.course._id,
@@ -34,7 +34,7 @@ export const isEnrollment = async (req, res, next) => {
   }
 };
 
-export const create = async (req, res) => {
+const create = async (req, res) => {
   console.log("We were here");
   let newEnrollment = {
     course: req.course._id,
@@ -54,7 +54,7 @@ export const create = async (req, res) => {
     console.log(error);
   }
 };
-export const isStudent = (req, res, next) => {
+const isStudent = (req, res, next) => {
   const isStudent =
     req.user && req.enrollment && req.user._id == req.enrollment.student._id;
   if (!isStudent) {
@@ -62,10 +62,10 @@ export const isStudent = (req, res, next) => {
   }
   next();
 };
-export const read = (req, res) => {
+const read = (req, res) => {
   return res.json(req.enrollment);
 };
-export const complete = async (req, res) => {
+const complete = async (req, res) => {
   let updatedData = {};
   updatedData["lessonStatus.$.completed"] = req.body.complete;
   if (req.body.courseCompleted) {
@@ -82,7 +82,7 @@ export const complete = async (req, res) => {
     console.log(error);
   }
 };
-export const listEnrolled = (req, res) => {
+const listEnrolled = (req, res) => {
   try {
     enrolled
       .find({ student: req.user._id })
@@ -100,7 +100,7 @@ export const listEnrolled = (req, res) => {
     console.log(error);
   }
 };
-export const enrollmentStats = async (req, res) => {
+const enrollmentStats = async (req, res) => {
   try {
     let stats = {};
     stats.totalEnrolled = await enrolled
@@ -115,4 +115,17 @@ export const enrollmentStats = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+module.exports = {
+  create,
+  listEnrolled,
+  enrolled,
+  enrollmentById,
+  enrollmentStats,
+  listEnrolled,
+  complete,
+  read,
+  isEnrollment,
+  isStudent,
 };

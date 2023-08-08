@@ -1,7 +1,7 @@
-import express from "express";
-import authCtrl from "../controllers/auth.controller";
-import run from "../validators";
-import validator from "../validators/auth.validator";
+const express = require("express");
+const authCtrl = require("../controllers/auth.controller");
+const run = require("../validators");
+const validator = require("../validators/auth.validator");
 
 const router = express.Router();
 
@@ -11,4 +11,4 @@ router
 
 router.route("/api/signout").get(authCtrl.signout);
 
-export default router;
+module.exports = router;

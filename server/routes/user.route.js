@@ -1,20 +1,20 @@
-import express from "express";
+const express = require("express");
 
 const router = express.Router();
 
 // middleware
-import { signIn } from "../middlewares";
-import run from "../validators";
-import validator from "../validators/auth.validator";
+const { signIn } = require("../middlewares");
+const run = require("../validators");
+const validator = require("../validators/auth.validator");
 
 // controllers
-import {
+const {
   create,
   list,
   read,
   update,
   remove,
-} from "../controllers/user.controller";
+} = require("../controllers/user.controller");
 
 // router.post("/register", register);
 // router.post("/login", login);
@@ -32,4 +32,4 @@ router
   .put(signIn, update)
   .delete(signIn, remove);
 
-export default router;
+module.exports = router;

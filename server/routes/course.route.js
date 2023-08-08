@@ -1,5 +1,5 @@
-import express from "express";
-import {
+const express = require("express");
+const {
   courseById,
   create,
   getPublished,
@@ -10,9 +10,9 @@ import {
   read,
   remove,
   update,
-} from "../controllers/course.controller";
-import { isEducator } from "../controllers/user.controller";
-import { signIn } from "../middlewares";
+} = require("../controllers/course.controller");
+const { isEducator } = require("../controllers/user.controller");
+const { signIn } = require("../middlewares");
 
 const router = express.Router();
 router.param("courseId", courseById);
@@ -30,4 +30,4 @@ router
   .route("/api/courses/:courseId/lesson/new")
   .put(signIn, isEducator, isCourseAuthorized, newLesson);
 
-export default router;
+module.exports = router;

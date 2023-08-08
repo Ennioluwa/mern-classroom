@@ -1,6 +1,6 @@
-import expressJwt from "express-jwt";
+const expressJwt = require("express-jwt");
 
-export const hasAuthorization = (req, res, next) => {
+const hasAuthorization = (req, res, next) => {
   const authorized = req.user && req.auth && req.profile._id === req.auth._id;
   if (!authorized) {
     return res.status(403).json({
@@ -10,7 +10,7 @@ export const hasAuthorization = (req, res, next) => {
   next();
 };
 
-export const signIn = expressJwt({
+const signIn = expressJwt({
   secret: "hello",
   algorithms: ["HS256"],
   credentialsRequired: true,
@@ -21,3 +21,5 @@ export const signIn = expressJwt({
     return null;
   },
 });
+
+module.exports = { hasAuthorization, signIn };

@@ -1,6 +1,6 @@
-import User from "../models/user";
-import { hashPassword, comparePassword } from "../utils/auth";
-import jwt from "jsonwebtoken";
+const User = require("../models/user");
+const { hashPassword, comparePassword } = require("../utils/auth");
+const jwt = require("jsonwebtoken");
 
 const signin = async (req, res) => {
   try {
@@ -32,4 +32,4 @@ const signout = async (req, res) => {
   }
 };
 
-export default { signin, signout };
+module.exports = { signin, signout };

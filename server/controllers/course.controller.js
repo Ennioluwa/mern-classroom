@@ -1,11 +1,11 @@
-import course from "../models/course";
-import user from "../models/user";
-import lodash from "lodash";
-import errorHandler from "./../helpers/dbErrorHandler";
-import formidable from "formidable";
-import fs from "fs";
+const course = require("../models/course");
+const user = require("../models/user");
+const lodash = require("lodash");
+const errorHandler = require("./../helpers/dbErrorHandler");
+const formidable = require("formidable");
+const fs = require("fs");
 
-export const create = async (req, res) => {
+const create = async (req, res) => {
   // console.log(req.body);
   // const newcourse = new course(req.body);
   // newcourse.instructor = req.user._id;
@@ -57,7 +57,7 @@ export const create = async (req, res) => {
   }
 };
 
-export const listByInstructor = (req, res) => {
+const listByInstructor = (req, res) => {
   course
     .find({ instructor: req.user._id })
     .populate("instructor", "_id name")
@@ -68,7 +68,7 @@ export const listByInstructor = (req, res) => {
       res.json(data);
     });
 };
-export const courseById = (req, res, next, id) => {
+const courseById = (req, res, next, id) => {
   try {
     course
       .findById(id)
@@ -84,10 +84,10 @@ export const courseById = (req, res, next, id) => {
     console.log(error);
   }
 };
-export const read = (req, res) => {
+const read = (req, res) => {
   return res.json(req.course);
 };
-export const isCourseAuthorized = async (req, res, next) => {
+const isCourseAuthorized = async (req, res, next) => {
   console.log(req.user, req.course);
   try {
     const isInstructor =
@@ -101,7 +101,7 @@ export const isCourseAuthorized = async (req, res, next) => {
     console.log(error);
   }
 };
-export const newLesson = (req, res) => {
+const newLesson = (req, res) => {
   try {
     const lesson = req.body;
     course
@@ -121,11 +121,11 @@ export const newLesson = (req, res) => {
     console.log(error);
   }
 };
-export const photo = (req, res, next) => {
+const photo = (req, res, next) => {
   res.set("Content-Type", req.course.image.contentType);
   return res.send(req.course.image.data);
 };
-// export const update = (req, res) => {
+// const update = (req, res) => {
 //   let { name, description, category, lessons, published } = req.body;
 //   if (!published) {
 //     published = false;
@@ -144,7 +144,7 @@ export const photo = (req, res, next) => {
 //       res.json(data);
 //     });
 // };
-export const update = async (req, res) => {
+const update = async (req, res) => {
   let myCourse = await course
     .findOne({ _id: req.course._id })
     .populate("instructor", "_id name");
@@ -159,7 +159,7 @@ export const update = async (req, res) => {
     console.log(error);
   }
 };
-export const remove = (req, res) => {
+const remove = (req, res) => {
   course.findByIdAndDelete(req.params.courseId).exec((err, data) => {
     if (err || !data) {
       return res.status(400).json({ error: "Could not update course" });
@@ -167,7 +167,7 @@ export const remove = (req, res) => {
     res.json(data);
   });
 };
-export const getPublished = (req, res) => {
+const getPublished = (req, res) => {
   course
     .find({ published: true })
     .populate("instructor", "_id name")
@@ -179,4 +179,18 @@ export const getPublished = (req, res) => {
       }
       res.json(data);
     });
+};
+
+module.exports = {
+  update,
+  remove,
+  getPublished,
+  create,
+  newLesson,
+  read,
+  listByInstructor,
+  isCourseAuthorized,
+  getPublished,
+  photo,
+  courseById,
 };

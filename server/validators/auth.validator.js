@@ -1,4 +1,4 @@
-import { check } from "express-validator";
+const { check } = require("express-validator");
 
 const userRegisterValidator = [
   check("name").not().isEmpty().withMessage("Name is required"),
@@ -14,7 +14,7 @@ const userLoginValidator = [
     .withMessage("Password must be at least 6 characters"),
 ];
 
-export default {
+module.exports = {
   userRegisterValidator,
   userLoginValidator,
 };
